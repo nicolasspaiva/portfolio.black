@@ -1,10 +1,13 @@
 
+import { useLanguage } from '../context/LanguageContext';
+
 const Skills = () => {
+    const { t } = useLanguage();
     const categories = [
-        { title: 'Front-end', skills: 'React / TypeScript / Next.js / Tailwind' },
-        { title: 'Styles', skills: 'CSS3 / SASS / Styled-Components / Framer Motion' },
-        { title: 'Back-end', skills: 'Node.js / Python / C# / PostgreSQL' },
-        { title: 'DevOps', skills: 'Docker / AWS / CI/CD / Linux' },
+        { title: t('skills.frontend.title'), skills: t('skills.frontend.items') },
+        { title: t('skills.styles.title'), skills: t('skills.styles.items') },
+        { title: t('skills.backend.title'), skills: t('skills.backend.items') },
+        { title: t('skills.devops.title'), skills: t('skills.devops.items') },
     ];
 
     return (
@@ -13,7 +16,7 @@ const Skills = () => {
             maxWidth: 'var(--container-width)',
             margin: '0 auto'
         }}>
-            <h2 style={{ fontSize: '2rem', marginBottom: '3rem' }}>Technical Skills</h2>
+            <h2 style={{ fontSize: '2rem', marginBottom: '3rem' }}>{t('skills.title')}</h2>
 
             <div style={{
                 display: 'grid',

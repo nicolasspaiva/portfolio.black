@@ -1,5 +1,8 @@
 
+import { useLanguage } from '../context/LanguageContext';
+
 const About = () => {
+    const { t } = useLanguage();
     return (
         <section id="about" style={{
             padding: '8rem 2rem',
@@ -12,7 +15,7 @@ const About = () => {
                 marginBottom: '4rem',
                 fontSize: '0.9rem'
             }}>
-                home / user / <span style={{ color: 'var(--text-main)' }}>about</span>
+                {t('about.breadcrumb')}
             </div>
 
             <div style={{
@@ -22,17 +25,16 @@ const About = () => {
                 alignItems: 'center'
             }}>
                 <div>
-                    <h2 style={{ fontSize: '2rem', marginBottom: '2rem' }}>About Me</h2>
+                    <h2 style={{ fontSize: '2rem', marginBottom: '2rem' }}>{t('about.title')}</h2>
                     <p style={{
                         color: 'var(--text-muted)',
                         marginBottom: '1.5rem',
                         fontSize: '1.1rem'
                     }}>
-                        I am <span style={{ color: 'var(--text-main)', fontStyle: 'italic', fontWeight: 'bold' }}>software engineer</span> developing robust solutions.
-                        My philosophy revolves around clean code, user-centric design, and continuous learning.
+                        {t('about.intro.1')} <span style={{ color: 'var(--text-main)', fontStyle: 'italic', fontWeight: 'bold' }}>{t('about.intro.role')}</span> {t('about.intro.2')}
                     </p>
                     <p style={{ color: 'var(--text-muted)', fontSize: '1.1rem' }}>
-                        I specialize in building scalable web applications that prioritize performance and accessibility.
+                        {t('about.description')}
                     </p>
                 </div>
 
@@ -54,7 +56,7 @@ const About = () => {
                         justifyContent: 'center',
                         overflow: 'hidden'
                     }}>
-                        <span style={{ color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>[Photo]</span>
+                        <span style={{ color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>{t('about.photo_placeholder')}</span>
                     </div>
                 </div>
             </div>

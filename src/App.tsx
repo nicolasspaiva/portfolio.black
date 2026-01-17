@@ -6,7 +6,10 @@ import Skills from './components/Skills';
 import Projects from './components/Projects';
 import './index.css';
 
+import { useLanguage } from './context/LanguageContext';
+
 function App() {
+  const { t } = useLanguage();
   return (
     <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
       <Header />
@@ -23,7 +26,7 @@ function App() {
         fontFamily: 'var(--font-mono)',
         fontSize: '0.875rem'
       }}>
-        <p>&copy; {new Date().getFullYear()} Developer Portfolio. Built with React.</p>
+        <p>&copy; {new Date().getFullYear()} {t('footer.copyright')}</p>
       </footer>
     </div>
   );

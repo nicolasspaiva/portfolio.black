@@ -1,7 +1,9 @@
 
 import { useState, useEffect } from 'react';
+import { useLanguage } from '../context/LanguageContext';
 
 const Header = () => {
+    const { language, toggleLanguage, t } = useLanguage();
     const [scrolled, setScrolled] = useState(false);
 
     useEffect(() => {
@@ -47,7 +49,7 @@ const Header = () => {
             I'll use inline styles for the main look and feel as requested, but responsiveness needs classes.
         */}
                 <ul className="nav-links" style={{ display: 'flex', gap: '2rem', listStyle: 'none' }}>
-                    {['About', 'Projects', `Skills`,].map((item) => (
+                    {['about', 'projects', 'skills'].map((item) => (
                         <li key={item}>
                             <a href={`#${item.toLowerCase()}`} style={{
                                 fontSize: '0.9rem',
@@ -57,7 +59,7 @@ const Header = () => {
                                 onMouseEnter={(e) => e.currentTarget.style.color = 'var(--text-main)'}
                                 onMouseLeave={(e) => e.currentTarget.style.color = 'var(--text-muted)'}
                             >
-                                {item}
+                                {t(`nav.${item}`)}
                             </a>
                         </li>
                     ))}
@@ -65,16 +67,19 @@ const Header = () => {
             </nav>
 
             <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
-                <button style={{
-                    padding: '0.5rem 1rem',
-                    borderRadius: 'var(--radius-button)',
-                    backgroundColor: 'var(--bg-card)',
-                    color: 'var(--text-main)',
-                    fontSize: '0.8rem',
-                    fontFamily: 'var(--font-mono)',
-                    transition: 'var(--transition-soft)'
-                }}>
-                    En / Pt
+                <button
+                    onClick={toggleLanguage}
+                    style={{
+                        padding: '0.5rem 1rem',
+                        borderRadius: 'var(--radius-button)',
+                        backgroundColor: 'var(--bg-card)',
+                        color: 'var(--text-main)',
+                        fontSize: '0.8rem',
+                        fontFamily: 'var(--font-mono)',
+                        transition: 'var(--transition-soft)',
+                        cursor: 'pointer'
+                    }}>
+                    {language === 'en' ? 'PT' : 'EN'}
                 </button>
             </div>
 

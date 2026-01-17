@@ -1,9 +1,12 @@
 
+import { useLanguage } from '../context/LanguageContext';
+
 const Projects = () => {
+    const { t } = useLanguage();
     const projects = [
-        { id: 1, title: 'E-Commerce Platform', desc: 'A full-featured online store with payments.' },
-        { id: 2, title: 'Task Management', desc: 'Productivity tool for remote teams.' },
-        { id: 3, title: 'Financial Dashboard', desc: 'Real-time data visualization and analytics.' },
+        { id: 1, title: t('projects.1.title'), desc: t('projects.1.desc') },
+        { id: 2, title: t('projects.2.title'), desc: t('projects.2.desc') },
+        { id: 3, title: t('projects.3.title'), desc: t('projects.3.desc') },
     ];
 
     return (
@@ -14,7 +17,7 @@ const Projects = () => {
             marginBottom: '4rem'
         }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'end', marginBottom: '3rem' }}>
-                <h2 style={{ fontSize: '2rem' }}>Selected Projects</h2>
+                <h2 style={{ fontSize: '2rem' }}>{t('projects.title')}</h2>
                 <a href="#" style={{
                     fontFamily: 'var(--font-mono)',
                     color: 'var(--text-muted)',
@@ -23,7 +26,7 @@ const Projects = () => {
                     alignItems: 'center',
                     gap: '0.5rem'
                 }}>
-                    View all <span>→</span>
+                    {t('projects.view_all')} <span>→</span>
                 </a>
             </div>
 
@@ -68,7 +71,7 @@ const Projects = () => {
                                 fontSize: '0.9rem',
                                 padding: 0
                             }}>
-                                Read more <span>→</span>
+                                {t('projects.read_more')} <span>→</span>
                             </button>
                         </div>
                     </div>

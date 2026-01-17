@@ -1,6 +1,9 @@
 import { Github, Linkedin, Mail } from 'lucide-react';
 
+import { useLanguage } from '../context/LanguageContext';
+
 const Hero = () => {
+    const { t } = useLanguage();
     return (
         <section style={{
             minHeight: '100vh',
@@ -19,8 +22,8 @@ const Hero = () => {
                     marginBottom: '1.5rem',
                     fontFamily: 'var(--font-mono)'
                 }}>
-                    Full-stack<br />
-                    <span style={{ color: 'var(--text-muted)' }}>Developer</span>
+                    {t('hero.greeting')}<br />
+                    <span style={{ color: 'var(--text-muted)' }}>{t('hero.role')}</span>
                 </h1>
 
                 <p style={{
@@ -30,8 +33,7 @@ const Hero = () => {
                     marginBottom: '3rem',
                     lineHeight: 1.6
                 }}>
-                    Building digital experiences with improved performance and aesthetics.
-                    Focusing on minimalism and functionality.
+                    {t('hero.description')}
                 </p>
 
                 <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', alignItems: 'center' }}>
@@ -46,7 +48,7 @@ const Hero = () => {
                         gap: '0.5rem',
                         transition: 'var(--transition-soft)'
                     }}>
-                        Projects <span>→</span>
+                        {t('hero.projects')} <span>→</span>
                     </button>
 
                     {/* LinkedIn */}
