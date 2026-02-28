@@ -79,7 +79,7 @@ const Header = () => {
                         transition: 'var(--transition-soft)',
                         cursor: 'pointer'
                     }}>
-                    {language === 'en' ? 'PT' : 'EN'}
+                    {language === 'en' ? 'PT-BR' : 'EN'}
                 </button>
             </div>
 
