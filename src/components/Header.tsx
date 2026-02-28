@@ -51,14 +51,7 @@ const Header = () => {
                 <ul className="nav-links" style={{ display: 'flex', gap: '2rem', listStyle: 'none' }}>
                     {['about', 'projects', 'skills'].map((item) => (
                         <li key={item}>
-                            <a href={`#${item.toLowerCase()}`} style={{
-                                fontSize: '0.9rem',
-                                color: 'var(--text-muted)',
-                                transition: 'var(--transition-soft)'
-                            }}
-                                onMouseEnter={(e) => e.currentTarget.style.color = 'var(--text-main)'}
-                                onMouseLeave={(e) => e.currentTarget.style.color = 'var(--text-muted)'}
-                            >
+                            <a href={`#${item.toLowerCase()}`} className="nav-link">
                                 {t(`nav.${item}`)}
                             </a>
                         </li>
