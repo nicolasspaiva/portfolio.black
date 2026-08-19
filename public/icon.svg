@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" role="img" aria-label="Nicolas Paiva">
+  <title>Nicolas Paiva</title>
+  <!-- Carcaça do instrumento -->
+  <rect width="32" height="32" rx="7" fill="#0E1116"/>
+  <rect x="0.5" y="0.5" width="31" height="31" rx="6.5" fill="none" stroke="#232D3D"/>
+  <!-- O "N" é o próprio traço de telemetria: sobe, cai, sobe -->
+  <polyline points="9.5,23 9.5,9 22.5,23 22.5,9"
+            fill="none" stroke="#F0A22E" stroke-width="3.2"
+            stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

@@ -1,51 +1,228 @@
+/* =========================================================================
+   Nicolas Paiva — "Editorial Instrument"
+
+   Três vozes tipográficas com papéis fixos:
+     serifada  → título (a voz editorial)
+     sans      → leitura (a voz que explica)
+     mono      → dado e etiqueta (a voz da máquina)
+
+   Azul como sinal único: nada mais no layout tem cor. Dois temas são a
+   mesma marca sob luzes diferentes — os papéis dos tokens não invertem,
+   só os valores.
+   ========================================================================= */
+
+/* -------------------------------------------------------------------------
+   1. TOKENS — ESCURO (padrão)
+   ------------------------------------------------------------------------- */
+
 :root {
-  /* Colors */
-  --bg-dark: #0a0a0a;
-  --bg-card: #1a1a1a;
-  --bg-card-hover: #262626;
-  --text-main: #ffffff;
-  --text-muted: #a3a3a3;
-  --accent: #2563eb;
+  color-scheme: dark;
 
-  /* Fonts */
-  --font-mono: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
-  --font-sans: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  /* Superfícies */
+  --bg: #0a0b0e;
+  --bg-2: #0d0f14;
+  --panel: #101319;
+  --panel-2: #151922;
 
-  /* Spacing & Layout */
-  --radius-card: 24px;
-  --radius-button: 9999px;
-  /* Pills */
-  --container-width: 1200px;
+  /* Texto — todos verificados ≥5:1 sobre --bg */
+  --txt-hi: #f2f5f9;
+  --txt-mid: #a2adbc;
+  --txt-lo: #7c8797;
 
-  /* Animations */
-  --transition-soft: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+  /* Sinal: azul. Preenchimento e texto são tokens separados porque o azul
+     legível sobre fundo escuro não é o mesmo azul que carrega texto branco. */
+  --accent: #2e6bf0;
+  --accent-hi: #4c86ff;
+  --accent-txt: #7facff;
+  --on-accent: #ffffff;
+  --accent-soft: rgba(76, 134, 255, 0.14);
+  --accent-line: rgba(76, 134, 255, 0.32);
+
+  /* Estado ativo — o único verde do sistema, só para "no ar"/"em curso" */
+  --ok: #3ecf8e;
+  --ok-soft: rgba(62, 207, 142, 0.13);
+  --ok-line: rgba(62, 207, 142, 0.26);
+  --ok-ring: rgba(62, 207, 142, 0.42);
+
+  /* Camadas e arestas — hairline por box-shadow, nunca border cinza chapada */
+  --surf-1: rgba(255, 255, 255, 0.032);
+  --surf-2: rgba(255, 255, 255, 0.062);
+  --surf-hover: rgba(255, 255, 255, 0.045);
+  --edge-hi: rgba(255, 255, 255, 0.15);
+  --edge-md: rgba(255, 255, 255, 0.082);
+  --edge-lo: rgba(255, 255, 255, 0.045);
+  --sheen: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  --sheen-strong: inset 0 1px 0 rgba(255, 255, 255, 0.09);
+
+  /* Sombras difusas de ambiente — nada de drop shadow duro */
+  --lift-1: 0 1px 2px rgba(0, 0, 0, 0.22), 0 8px 24px -12px rgba(0, 0, 0, 0.5);
+  --lift-2: 0 2px 6px rgba(0, 0, 0, 0.26), 0 22px 52px -18px rgba(0, 0, 0, 0.62);
+  --lift-3: 0 4px 10px rgba(0, 0, 0, 0.3), 0 44px 84px -26px rgba(0, 0, 0, 0.72);
+
+  --glass: rgba(13, 15, 20, 0.68);
+  --scroll-thumb: rgba(255, 255, 255, 0.16);
+  --grain-op: 0.03;
+
+  /* Halo: brilho radial azul atrás do hero, dá profundidade ao preto */
+  --halo-a: rgba(46, 107, 240, 0.17);
+  --halo-b: rgba(46, 107, 240, 0.07);
 }
 
-* {
+/* -------------------------------------------------------------------------
+   2. TOKENS — CLARO
+   Fundo levemente azulado, cartões brancos, sombra difusa e ampla.
+   O acento é o mesmo azul, um passo mais escuro para segurar contraste.
+   ------------------------------------------------------------------------- */
+
+:root[data-theme='light'] {
+  color-scheme: light;
+
+  --bg: #f6f7fb;
+  --bg-2: #eef1f8;
+  --panel: #ffffff;
+  --panel-2: #f4f6fb;
+
+  --txt-hi: #0a0c10;
+  --txt-mid: #4b5565;
+  --txt-lo: #5d6879;
+
+  --accent: #2563eb;
+  --accent-hi: #1d4ed8;
+  --accent-txt: #1d4ed8;
+  --on-accent: #ffffff;
+  --accent-soft: rgba(37, 99, 235, 0.09);
+  --accent-line: rgba(37, 99, 235, 0.26);
+
+  --ok: #0f7a4d;
+  --ok-soft: rgba(15, 122, 77, 0.1);
+  --ok-line: rgba(15, 122, 77, 0.22);
+  --ok-ring: rgba(15, 122, 77, 0.38);
+
+  --surf-1: rgba(10, 12, 16, 0.03);
+  --surf-2: rgba(10, 12, 16, 0.058);
+  --surf-hover: rgba(10, 12, 16, 0.04);
+  --edge-hi: rgba(10, 12, 16, 0.13);
+  --edge-md: rgba(10, 12, 16, 0.082);
+  --edge-lo: rgba(10, 12, 16, 0.05);
+  --sheen: inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  --sheen-strong: inset 0 1px 0 rgba(255, 255, 255, 1);
+
+  /* No claro a sombra é larga e quase sem opacidade — o cartão flutua,
+     não é recortado. Essa é a diferença entre "premium" e "bootstrap". */
+  --lift-1: 0 1px 2px rgba(16, 24, 40, 0.04), 0 10px 26px -14px rgba(16, 24, 40, 0.16);
+  --lift-2: 0 2px 6px rgba(16, 24, 40, 0.05), 0 26px 58px -22px rgba(16, 24, 40, 0.2);
+  --lift-3: 0 4px 12px rgba(16, 24, 40, 0.06), 0 52px 96px -32px rgba(16, 24, 40, 0.26);
+
+  --glass: rgba(255, 255, 255, 0.74);
+  --scroll-thumb: rgba(10, 12, 16, 0.22);
+  --grain-op: 0.035;
+
+  --halo-a: rgba(37, 99, 235, 0.11);
+  --halo-b: rgba(37, 99, 235, 0.04);
+}
+
+/* -------------------------------------------------------------------------
+   3. INVARIANTES DE TEMA — tipografia, escala, ritmo, curvas
+   ------------------------------------------------------------------------- */
+
+:root {
+  --font-display: 'Playfair Display', 'Iowan Old Style', Georgia, serif;
+  --font-body: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, Menlo, monospace;
+
+  --fs-display: clamp(2.6rem, 6.5vw, 5.4rem);
+  --fs-h2: clamp(2rem, 4.2vw, 3.35rem);
+  --fs-h3: clamp(1.25rem, 2.2vw, 1.55rem);
+  --fs-lede: clamp(1.0625rem, 1.5vw, 1.1875rem);
+  --fs-body: 1rem;
+  --fs-sm: 0.9375rem;
+  --fs-xs: 0.8125rem;
+  --fs-label: 0.6875rem;
+
+  /* Bisel duplo: o padding da casca define o raio do núcleo.
+     Raios concêntricos — a curva de dentro acompanha a de fora. */
+  --bezel-pad: 6px;
+  --r-shell: 24px;
+  --r-core: calc(var(--r-shell) - var(--bezel-pad));
+  --r-chip: 7px;
+  --r-pill: 999px;
+
+  --shell-w: 1240px;
+  --gut: clamp(1.25rem, 4vw, 2.75rem);
+  --sec-y: clamp(5.5rem, 11vw, 9.5rem);
+
+  --ease-fluid: cubic-bezier(0.32, 0.72, 0, 1);
+  --ease-soft: cubic-bezier(0.22, 0.61, 0.24, 1);
+}
+
+/* A troca de tema é uma dissolução, não um corte seco. Só as propriedades
+   de pintura entram na transição — nada que force layout. */
+body,
+.bezel,
+.core,
+.chip,
+.btn,
+.hdr-island,
+.eyebrow,
+.card {
+  transition-property: background-color, background-image, color, box-shadow;
+  transition-duration: 0.45s;
+  transition-timing-function: var(--ease-fluid);
+}
+
+/* -------------------------------------------------------------------------
+   4. BASE
+   ------------------------------------------------------------------------- */
+
+*,
+*::before,
+*::after {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
+html {
+  scroll-behavior: smooth;
+  /* A âncora não gruda o título embaixo da ilha flutuante. */
+  scroll-padding-top: 7rem;
+}
+
 body {
-  background-color: var(--bg-dark);
-  color: var(--text-main);
-  font-family: var(--font-sans);
+  background-color: var(--bg);
+  color: var(--txt-hi);
+  font-family: var(--font-body);
+  font-size: var(--fs-body);
+  line-height: 1.68;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
-  line-height: 1.6;
 }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  font-family: var(--font-mono);
-  font-weight: 500;
-  letter-spacing: -0.02em;
+/* Grão fixo: dá matéria física à superfície e mata o "chapado digital".
+   Fixed + pointer-events:none — nunca repinta durante o scroll. */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  opacity: var(--grain-op);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* Halo do sinal atrás do topo da página. Gradiente estático em elemento
+   fixo — sem blur, sem repaint por scroll. */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0 0 auto 0;
+  height: 100vh;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(52% 46% at 76% 16%, var(--halo-a), transparent 68%),
+    radial-gradient(46% 40% at 12% 4%, var(--halo-b), transparent 70%);
 }
 
 a {
@@ -59,50 +236,1069 @@ ul {
 
 button {
   font-family: inherit;
+  font-size: inherit;
+  color: inherit;
   cursor: pointer;
   border: none;
   background: none;
 }
 
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent-txt);
+  outline-offset: 3px;
+  border-radius: 5px;
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--on-accent);
+}
+
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 11px;
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--bg-dark);
+  background: var(--bg);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--bg-card);
-  border-radius: 4px;
+  background: var(--scroll-thumb);
+  border: 3px solid var(--bg);
+  border-radius: 99px;
 }
 
-::-webkit-scrollbar-thumb:hover {
-  background: var(--bg-card-hover);
+/* Pula para o conteúdo — primeiro tab da página. */
+.skip {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 60;
 }
 
-.nav-link {
+.skip:focus {
+  left: 1rem;
+  top: 1rem;
+  padding: 0.75rem 1.15rem;
+  border-radius: var(--r-pill);
+  background: var(--accent);
+  color: var(--on-accent);
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+}
+
+/* -------------------------------------------------------------------------
+   5. PRIMITIVAS
+   ------------------------------------------------------------------------- */
+
+.shell {
+  width: 100%;
+  max-width: var(--shell-w);
+  margin-inline: auto;
+  padding-inline: var(--gut);
   position: relative;
-  font-size: 0.9rem;
-  color: var(--text-muted);
-  transition: var(--transition-soft);
+  z-index: 2;
 }
 
-.nav-link:hover {
-  color: var(--text-main);
+/* Bisel duplo (Doppelrand): casca externa + núcleo interno.
+   O objeto assentado na bandeja, não colado no fundo. */
+.bezel {
+  padding: var(--bezel-pad);
+  border-radius: var(--r-shell);
+  background: linear-gradient(180deg, var(--surf-2), var(--surf-1));
+  box-shadow: var(--lift-2), var(--sheen);
 }
 
-.nav-link::after {
+.core {
+  border-radius: var(--r-core);
+  background: var(--panel);
+  box-shadow: var(--sheen-strong), 0 0 0 1px var(--edge-lo);
+  overflow: hidden;
+}
+
+/* Cartão de bisel duplo que reage ao ponteiro como um objeto com massa. */
+.card {
+  display: block;
+  transition: transform 0.7s var(--ease-fluid), box-shadow 0.7s var(--ease-fluid);
+  will-change: transform;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--lift-3), var(--sheen);
+}
+
+.card:hover .core {
+  background: var(--panel-2);
+}
+
+/* Etiqueta de canal: a voz da máquina. Mono, caixa alta, tracking largo. */
+.chan {
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--txt-lo);
+}
+
+.chan-accent {
+  color: var(--accent-txt);
+}
+
+/* Eyebrow: pílula microscópica antes dos títulos grandes. */
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--txt-mid);
+  padding: 0.42rem 0.9rem;
+  border-radius: var(--r-pill);
+  background: var(--panel);
+  box-shadow: inset 0 0 0 1px var(--edge-md), var(--lift-1);
+}
+
+.sec {
+  padding-block: var(--sec-y);
+}
+
+.sec-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem 2rem;
+  margin-bottom: clamp(3rem, 6vw, 4.75rem);
+}
+
+/* O título de seção é serifado: é ele que carrega a voz editorial. */
+.sec-title {
+  font-family: var(--font-display);
+  font-size: var(--fs-h2);
+  font-weight: 700;
+  letter-spacing: -0.022em;
+  line-height: 1.04;
+  text-wrap: balance;
+  margin-top: 1rem;
+}
+
+.sec-read {
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--txt-lo);
+  white-space: nowrap;
+}
+
+/* Chip de dado: retangular. Redondo é interativo, reto é informação. */
+.chip {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  letter-spacing: 0.045em;
+  color: var(--txt-mid);
+  background: var(--panel-2);
+  border-radius: var(--r-chip);
+  padding: 0.4rem 0.68rem;
+  white-space: nowrap;
+  box-shadow: inset 0 0 0 1px var(--edge-lo), var(--sheen);
+}
+
+.chip:hover {
+  color: var(--txt-hi);
+  background: var(--surf-1);
+}
+
+.chip-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  flex: none;
+  display: inline-block;
+  background: var(--ok);
+}
+
+.dot-live {
+  animation: pulse 2.8s var(--ease-soft) infinite;
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 var(--ok-ring);
+  }
+  70% {
+    box-shadow: 0 0 0 8px transparent;
+  }
+  100% {
+    box-shadow: 0 0 0 0 transparent;
+  }
+}
+
+/* Selo de estado — "no ar", "em curso". */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ok);
+  background: var(--ok-soft);
+  border-radius: var(--r-pill);
+  padding: 0.3rem 0.68rem;
+  width: fit-content;
+  box-shadow: inset 0 0 0 1px var(--ok-line);
+}
+
+/* -------------------------------------------------------------------------
+   6. BOTÕES — pílula com ícone aninhado e física de pressão
+   ------------------------------------------------------------------------- */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  padding: 0.5rem 0.5rem 0.5rem 1.35rem;
+  border-radius: var(--r-pill);
+  transition: transform 0.55s var(--ease-fluid), background-color 0.55s var(--ease-fluid),
+    box-shadow 0.55s var(--ease-fluid), color 0.55s var(--ease-fluid);
+  will-change: transform;
+}
+
+/* O ícone nunca fica nu ao lado do texto: mora no próprio círculo,
+   encostado na borda interna direita do botão. */
+.btn-orb {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  flex: none;
+  transition: transform 0.55s var(--ease-fluid), background-color 0.55s var(--ease-fluid);
+}
+
+.btn-primary {
+  background-color: var(--accent);
+  color: var(--on-accent);
+  font-weight: 500;
+  box-shadow: var(--lift-1), inset 0 1px 0 rgba(255, 255, 255, 0.24);
+}
+
+.btn-primary .btn-orb {
+  background-color: rgba(255, 255, 255, 0.18);
+}
+
+.btn-primary:hover {
+  background-color: var(--accent-hi);
+  box-shadow: var(--lift-2), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+.btn-ghost {
+  color: var(--txt-hi);
+  background-color: var(--panel);
+  box-shadow: inset 0 0 0 1px var(--edge-md), var(--lift-1);
+}
+
+.btn-ghost .btn-orb {
+  background-color: var(--surf-2);
+}
+
+.btn-ghost:hover {
+  box-shadow: inset 0 0 0 1px var(--edge-hi), var(--lift-2);
+}
+
+/* Tensão cinética interna: o orbe desloca na diagonal e cresce. */
+.btn:hover .btn-orb {
+  transform: translate(3px, -1px) scale(1.06);
+}
+
+.btn:active {
+  transform: scale(0.978);
+}
+
+/* Link de texto com seta — "ver mais" dentro dos cartões. */
+.link-more {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  color: var(--accent-txt);
+  transition: gap 0.5s var(--ease-fluid);
+}
+
+.link-more svg {
+  transition: transform 0.55s var(--ease-fluid);
+}
+
+.card:hover .link-more svg,
+.link-more:hover svg {
+  transform: translate(3px, -3px);
+}
+
+/* -------------------------------------------------------------------------
+   7. HEADER — ilha de vidro flutuante
+   ------------------------------------------------------------------------- */
+
+.hdr {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 40;
+  display: flex;
+  justify-content: center;
+  padding: 1.35rem var(--gut);
+  pointer-events: none;
+}
+
+/* Destacada do topo (mt), largura do conteúdo (w-max), totalmente arredondada.
+   Blur só aqui: elemento fixo, nunca em container que rola. */
+.hdr-island {
+  pointer-events: auto;
+  display: flex;
+  align-items: center;
+  gap: clamp(1rem, 3vw, 2.25rem);
+  max-width: 100%;
+  padding: 0.5rem 0.5rem 0.5rem 1.15rem;
+  border-radius: var(--r-pill);
+  background-color: var(--glass);
+  backdrop-filter: blur(22px) saturate(170%);
+  -webkit-backdrop-filter: blur(22px) saturate(170%);
+  box-shadow: inset 0 0 0 1px var(--edge-md), var(--sheen), var(--lift-2);
+  transition: transform 0.7s var(--ease-fluid), background-color 0.7s var(--ease-fluid);
+  will-change: transform;
+}
+
+.hdr-hidden {
+  transform: translateY(calc(-100% - 1.6rem));
+}
+
+.hdr-mark {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-family: var(--font-display);
+  font-size: 1.0625rem;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  white-space: nowrap;
+}
+
+.hdr-nav {
+  display: flex;
+  gap: clamp(0.5rem, 1.6vw, 1.25rem);
+}
+
+.hdr-link {
+  position: relative;
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--txt-lo);
+  padding: 0.5rem 0.4rem;
+  transition: color 0.5s var(--ease-fluid);
+}
+
+.hdr-link:hover {
+  color: var(--txt-hi);
+}
+
+/* Sublinhado que cresce do centro — a seção corrente fica marcada. */
+.hdr-link::after {
   content: '';
   position: absolute;
-  width: 0;
-  height: 1px;
-  bottom: -4px;
-  left: 0;
-  background-color: var(--text-main);
-  transition: width 0.3s ease-in-out;
+  left: 0.4rem;
+  right: 0.4rem;
+  bottom: 0.15rem;
+  height: 1.5px;
+  border-radius: 2px;
+  background-color: var(--accent-txt);
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform 0.55s var(--ease-fluid);
 }
 
-.nav-link:hover::after {
+.hdr-link:hover::after,
+.hdr-link-on::after {
+  transform: scaleX(1);
+}
+
+.hdr-link-on {
+  color: var(--txt-hi);
+}
+
+.hdr-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.hdr-lang,
+.hdr-theme {
+  display: grid;
+  place-items: center;
+  height: 32px;
+  border-radius: var(--r-pill);
+  color: var(--txt-mid);
+  background-color: var(--surf-1);
+  transition: color 0.5s var(--ease-fluid), background-color 0.5s var(--ease-fluid),
+    transform 0.5s var(--ease-fluid);
+}
+
+.hdr-lang {
+  /* Largura do rótulo mais largo ("PT-BR"), para a ilha não pular de tamanho
+     quando o idioma troca — o botão alterna entre "EN" e "PT-BR". */
+  min-width: 58px;
+  padding-inline: 0.7rem;
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  letter-spacing: 0.1em;
+  color: var(--txt-hi);
+}
+
+.hdr-theme {
+  width: 32px;
+}
+
+.hdr-lang:hover,
+.hdr-theme:hover {
+  color: var(--txt-hi);
+  background-color: var(--surf-2);
+}
+
+.hdr-theme:hover {
+  transform: rotate(-20deg);
+}
+
+/* -------------------------------------------------------------------------
+   8. HERO — divisão editorial: tipografia à esquerda, instrumento à direita
+   ------------------------------------------------------------------------- */
+
+.hero {
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  padding-top: clamp(8.5rem, 18vh, 12rem);
+  padding-bottom: clamp(4rem, 9vw, 7rem);
+}
+
+.hero-grid {
   width: 100%;
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+  gap: clamp(2.5rem, 5vw, 4.5rem);
+  align-items: center;
+}
+
+.hero-title {
+  font-family: var(--font-display);
+  font-size: var(--fs-display);
+  font-weight: 700;
+  line-height: 0.98;
+  letter-spacing: -0.028em;
+  margin-top: 1.6rem;
+  /* Em `em`, não em `ch`: o algarismo da Playfair é largo e 15ch dava ~918px,
+     largura suficiente para "Full Stack Developer" caber numa linha só e
+     atravessar a página. Em 7em o título para na metade esquerda, sobra a
+     coluna da imagem, e os dois idiomas quebram igual:
+
+       Nicolas Paiva        Nicolas Paiva
+       Desenvolvedor        Full Stack
+       Full Stack           Developer
+
+     A medida acompanha o font-size, então vale igual em qualquer viewport.
+     Piso: "Desenvolvedor", a palavra mais larga, ocupa ~6.4em. */
+  max-inline-size: 7em;
+  /* Sem isto a função quebra como "Desenvolvedor Full / Stack" no mobile. */
+  text-wrap: balance;
+}
+
+/* A segunda metade da frase vira itálico serifado com régua azul por baixo.
+   Régua e não tinta: o contraste do texto continua no branco/preto. */
+/* Bloco: o nome fica sozinho na primeira linha, a função começa na seguinte.
+   O <em> segue inline — em block o sublinhado atravessaria a caixa inteira,
+   inclusive o espaço vazio depois da última palavra. */
+.hero-title-name {
+  display: block;
+}
+
+/* Romana, não itálica: a itálica do Playfair é caligráfica demais e briga
+   com a mono e a sans geométrica do resto do sistema. A hierarquia entre
+   quem (o nome) e o quê (a função) fica no peso e na régua azul. */
+.hero-title em {
+  font-style: normal;
+  font-weight: 500;
+  /* A distância entre 500 e 700 na Playfair quase não se lê nesse tamanho:
+     quem separa o nome da função é o tom, não o peso. */
+  color: var(--txt-mid);
+}
+
+/* --- Retrato ------------------------------------------------------------- */
+
+.hero-photo {
+  position: relative;
+}
+
+/* A proporção vive no CSS, não no arquivo: o navegador reserva a caixa antes
+   do download e o recorte 4:5 do script casa exatamente com ela. */
+.hero-photo .core {
+  display: block;
+  position: relative;
+  aspect-ratio: 4 / 5;
+}
+
+.hero-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* P&B com sombra funda, como na referência. Idêntico nos dois temas por
+     decisão — no claro o retrato é um bloco escuro deliberado. */
+  filter: grayscale(1) contrast(1.15) brightness(0.9);
+}
+
+/* Vinheta por cima, não gravada no arquivo: o mesmo asset serve os dois temas
+   e o ajuste fica em CSS, sem reexportar imagem. */
+.hero-photo .core::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(115% 85% at 50% 32%, transparent 38%, rgba(0, 0, 0, 0.5) 100%);
+}
+
+.hero-lede {
+  margin-top: 2.15rem;
+  max-inline-size: 52ch;
+  font-size: var(--fs-lede);
+  color: var(--txt-mid);
+  text-wrap: pretty;
+}
+
+.hero-acts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  margin-top: 2.6rem;
+}
+
+/* Faixa de cabeçalho do cartão — usada pelo painel de perfil no Sobre. */
+
+.panel-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.6rem 1rem;
+  padding: 1.05rem 1.4rem;
+  background-color: var(--panel-2);
+  box-shadow: inset 0 -1px 0 var(--edge-md);
+}
+
+
+/* -------------------------------------------------------------------------
+   9. SOBRE
+   ------------------------------------------------------------------------- */
+
+.about-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+  gap: clamp(2.5rem, 6vw, 5rem);
+  align-items: start;
+}
+
+/* A frase-manifesto: serifada, grande, no meio do corpo em sans.
+   É o único parágrafo com voz editorial. */
+.about-lede {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 2.9vw, 2.15rem);
+  font-weight: 600;
+  line-height: 1.24;
+  letter-spacing: -0.018em;
+  margin-bottom: 1.85rem;
+  text-wrap: balance;
+}
+
+.about-body p {
+  color: var(--txt-mid);
+  margin-bottom: 1.15rem;
+  max-inline-size: 62ch;
+}
+
+.about-row {
+  padding: 1.05rem 1.4rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1.25rem;
+  position: relative;
+}
+
+.about-row + .about-row::before,
+.foot-link + .foot-link::before,
+.tl-item + .tl-item::before {
+  content: '';
+  position: absolute;
+  left: 1.4rem;
+  right: 1.4rem;
+  top: 0;
+  height: 1px;
+  background-color: var(--edge-md);
+}
+
+.about-row-v {
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  color: var(--txt-hi);
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Medida que corre em tempo real: azul, o sinal do sistema. */
+.about-row-live {
+  color: var(--accent-txt);
+}
+
+/* -------------------------------------------------------------------------
+   10. STACK — grade de cartões, um por grupo
+   ------------------------------------------------------------------------- */
+
+.stack-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(236px, 1fr));
+  gap: clamp(1rem, 2vw, 1.4rem);
+}
+
+.stack-card .core {
+  height: 100%;
+  padding: 1.6rem 1.5rem;
+}
+
+.stack-card-label {
+  display: block;
+  padding-bottom: 0.9rem;
+  margin-bottom: 1.1rem;
+  box-shadow: inset 0 -1px 0 var(--edge-md);
+}
+
+.stack-list {
+  display: grid;
+  gap: 0.65rem;
+}
+
+.stack-list li {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  font-size: var(--fs-sm);
+  color: var(--txt-mid);
+  line-height: 1.4;
+}
+
+/* Marca monocromática, alinhada à altura-x do rótulo ao lado. Some no hover
+   do cartão junto com o texto, para o conjunto reagir como um bloco só. */
+.tech-mark {
+  width: 16px;
+  height: 16px;
+  flex: none;
+  fill: currentColor;
+  color: var(--txt-lo);
+  transition: color 0.6s var(--ease-fluid);
+}
+
+.stack-card:hover .tech-mark {
+  color: var(--txt-hi);
+}
+
+/* -------------------------------------------------------------------------
+   11. EXPERIÊNCIA — linha do tempo em painel único
+   ------------------------------------------------------------------------- */
+
+.tl-item {
+  display: grid;
+  grid-template-columns: 200px minmax(0, 1fr);
+  gap: clamp(1.25rem, 4vw, 3rem);
+  padding: clamp(1.85rem, 4vw, 2.6rem) clamp(1.4rem, 3vw, 2rem);
+  position: relative;
+}
+
+.tl-when {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+
+.tl-range {
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  color: var(--txt-hi);
+  font-variant-numeric: tabular-nums;
+}
+
+.tl-dur {
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--txt-lo);
+}
+
+.tl-role {
+  font-family: var(--font-display);
+  font-size: var(--fs-h3);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.18;
+}
+
+.tl-org {
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  color: var(--accent-txt);
+  margin-top: 0.45rem;
+}
+
+.tl-list {
+  margin-top: 1.35rem;
+  display: grid;
+  gap: 0.8rem;
+}
+
+.tl-list li {
+  position: relative;
+  padding-left: 1.35rem;
+  color: var(--txt-mid);
+  font-size: var(--fs-sm);
+  max-inline-size: 68ch;
+}
+
+/* Traço curto no lugar do bullet redondo — marca de nota editorial. */
+.tl-list li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.68em;
+  width: 8px;
+  height: 1.5px;
+  border-radius: 2px;
+  background-color: var(--accent-txt);
+}
+
+/* -------------------------------------------------------------------------
+   12. PROJETOS — grade de cartões
+   ------------------------------------------------------------------------- */
+
+.proj-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(330px, 1fr));
+  gap: clamp(1.25rem, 2.5vw, 1.75rem);
+  align-items: stretch;
+}
+
+.proj-card .core {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: clamp(1.6rem, 3vw, 2.15rem);
+}
+
+.proj-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem 0.85rem;
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--txt-lo);
+}
+
+.proj-name {
+  font-family: var(--font-display);
+  font-size: clamp(1.6rem, 3vw, 2.05rem);
+  font-weight: 700;
+  letter-spacing: -0.024em;
+  line-height: 1.1;
+  margin: 1.1rem 0 0.9rem;
+  text-wrap: balance;
+}
+
+.proj-sum {
+  color: var(--txt-mid);
+  font-size: var(--fs-sm);
+  max-inline-size: 58ch;
+}
+
+.proj-card .tl-list {
+  margin-top: 1.35rem;
+}
+
+/* Empurra chips e link para a base — cartões de altura desigual terminam
+   alinhados na mesma linha. */
+.proj-foot {
+  margin-top: auto;
+  padding-top: 1.6rem;
+}
+
+.proj-foot .chip-row {
+  padding-top: 1.35rem;
+  margin-top: 1.35rem;
+  box-shadow: inset 0 1px 0 var(--edge-md);
+}
+
+/* -------------------------------------------------------------------------
+   13. FORMAÇÃO
+   ------------------------------------------------------------------------- */
+
+.edu-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: clamp(1rem, 2vw, 1.4rem);
+}
+
+.edu-card .core {
+  height: 100%;
+  padding: 1.6rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.edu-title {
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: -0.015em;
+  text-wrap: balance;
+}
+
+.edu-org {
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  color: var(--txt-mid);
+  margin-top: auto;
+  padding-top: 0.5rem;
+}
+
+/* -------------------------------------------------------------------------
+   14. CONTATO / RODAPÉ
+   ------------------------------------------------------------------------- */
+
+.foot {
+  padding-block: var(--sec-y) 3rem;
+}
+
+/* O nome em serifada fecha a página — assinatura, não decoração. Fica logo
+   abaixo do H1 na escala: a assinatura não pode ser a maior tipografia da
+   página, senão compete com o próprio título. */
+.foot-name {
+  font-family: var(--font-display);
+  font-size: clamp(2.4rem, 6vw, 4.9rem);
+  font-weight: 700;
+  letter-spacing: -0.028em;
+  line-height: 0.98;
+  color: var(--txt-hi);
+}
+
+.foot-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 0.85fr);
+  gap: clamp(2.5rem, 6vw, 4.5rem);
+  align-items: end;
+  margin-bottom: clamp(3.5rem, 8vw, 5.5rem);
+}
+
+.foot-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.05rem 1.4rem;
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  color: var(--txt-mid);
+  position: relative;
+  transition: color 0.5s var(--ease-fluid), background-color 0.5s var(--ease-fluid);
+}
+
+.foot-link:hover {
+  color: var(--txt-hi);
+  background-color: var(--panel-2);
+}
+
+.foot-link span:first-child {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7rem;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.foot-link-arrow {
+  flex: none;
+  transition: transform 0.55s var(--ease-fluid);
+}
+
+.foot-link:hover .foot-link-arrow {
+  transform: translate(3px, -3px);
+}
+
+.foot-bar {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.85rem;
+  padding-top: 1.85rem;
+  box-shadow: inset 0 1px 0 var(--edge-md);
+}
+
+/* -------------------------------------------------------------------------
+   15. REVELAÇÃO POR SCROLL — massa e profundidade de campo
+   Só transform, opacity e filter. Nenhuma propriedade de layout.
+   ------------------------------------------------------------------------- */
+
+.reveal {
+  opacity: 0;
+  transform: translateY(48px);
+  filter: blur(8px);
+  transition: opacity 0.95s var(--ease-fluid), transform 0.95s var(--ease-fluid),
+    filter 0.95s var(--ease-fluid);
+  transition-delay: var(--d, 0ms);
+  will-change: transform, opacity;
+}
+
+.reveal-in {
+  opacity: 1;
+  transform: none;
+  filter: blur(0);
+  will-change: auto;
+}
+
+/* -------------------------------------------------------------------------
+   16. RESPONSIVO — abaixo de 768px tudo colapsa para coluna única
+   ------------------------------------------------------------------------- */
+
+@media (max-width: 1040px) {
+  .hero-grid,
+  .about-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .hero {
+    min-height: auto;
+    padding-top: clamp(7.5rem, 16vh, 10rem);
+  }
+
+  /* O retorno do retrato ao fluxo o coloca abaixo do texto, onde ele não pode
+     ocupar a largura toda: um rosto de 900px de largura é cartaz, não hero. */
+  .hero-photo {
+    max-inline-size: 380px;
+  }
+}
+
+@media (max-width: 900px) {
+  .foot-grid {
+    grid-template-columns: minmax(0, 1fr);
+    align-items: start;
+  }
+}
+
+@media (max-width: 780px) {
+  .hdr-nav {
+    display: none;
+  }
+
+  .tl-item {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .tl-when {
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.6rem 1rem;
+  }
+
+  .proj-grid,
+  .stack-grid,
+  .edu-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* Alvos de toque: 44×44 mínimo onde o ponteiro é o dedo. */
+@media (pointer: coarse) {
+  .hdr-mark,
+  .hdr-link,
+  .hdr-lang,
+  .hdr-theme,
+  .link-more,
+  .foot-link {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .hdr-lang,
+  .hdr-theme {
+    min-width: 44px;
+  }
+
+  .foot-link {
+    display: flex;
+  }
+}
+
+/* -------------------------------------------------------------------------
+   17. MOVIMENTO REDUZIDO — o estado final entra direto
+   ------------------------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+
+  .reveal {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+
+  .card:hover {
+    transform: none;
+  }
 }

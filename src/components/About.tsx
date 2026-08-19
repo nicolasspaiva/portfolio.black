@@ -1,64 +1,81 @@
-
+import { useMemo } from 'react';
 import { useLanguage } from '../context/LanguageContext';
+import { EDUCATION, LANGUAGES, PROFILE, currentRoleStart, tenures } from '../constants/data';
+import { accumulatedMonths, useUptime } from '../hooks/useUptime';
+import Reveal from './Reveal';
 
 const About = () => {
-    const { t } = useLanguage();
+    const { language, t } = useLanguage();
+    const up = useUptime(useMemo(() => currentRoleStart(), []));
+
+    const total = accumulatedMonths(tenures());
+    const totalLabel = `${Math.floor(total / 12)}${t('unit.y')} ${total % 12}${t('unit.mo')}`;
+    const uptimeLabel =
+        `${up.years}${t('unit.y')} ${up.months}${t('unit.mo')} ${up.days}${t('unit.d')} · ${up.clock}`;
+
+    /* Medidas correndo primeiro, fatos estáticos depois. A localização cobre o
+       que antes era a linha "Base" do painel — era o mesmo dado duas vezes. */
+    const rows = [
+        { k: t('gauge.uptime'), v: uptimeLabel, live: true },
+        { k: t('gauge.total'), v: totalLabel, live: false },
+        { k: t('about.row.location'), v: PROFILE.location[language], live: false },
+        {
+            k: t('about.row.education'),
+            v: `${EDUCATION[0].org} · ${EDUCATION[0].period}`,
+            live: false,
+        },
+        { k: t('about.row.focus'), v: t('about.row.focus.v'), live: false },
+        {
+            k: t('about.row.langs'),
+            v: LANGUAGES.map((l) => `${l.name[language]} (${l.level[language]})`).join(' · '),
+            live: false,
+        },
+    ];
+
     return (
-        <section id="about" style={{
-            padding: '8rem 2rem',
-            maxWidth: 'var(--container-width)',
-            margin: '0 auto'
-        }}>
-            <div style={{
-                fontFamily: 'var(--font-mono)',
-                color: 'var(--text-muted)',
-                marginBottom: '4rem',
-                fontSize: '0.9rem'
-            }}>
-                {t('about.breadcrumb')}
-            </div>
-
-            <div style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-                gap: '4rem',
-                alignItems: 'center'
-            }}>
-                <div>
-                    <h2 style={{ fontSize: '2rem', marginBottom: '2rem' }}>{t('about.title')}</h2>
-                    <p style={{
-                        color: 'var(--text-muted)',
-                        marginBottom: '1.5rem',
-                        fontSize: '1.1rem'
-                    }}>
-                        {t('about.intro.1')} <span style={{ color: 'var(--text-main)', fontStyle: 'italic', fontWeight: 'bold' }}>{t('about.intro.role')}</span> {t('about.intro.2')}
-                    </p>
-                    <p style={{ color: 'var(--text-muted)', fontSize: '1.1rem' }}>
-                        {t('about.description')}
-                    </p>
-                </div>
-
-                <div style={{
-                    position: 'relative',
-                    padding: '1rem',
-                    borderRadius: 'var(--radius-card)',
-                    background: 'var(--bg-card)',
-                    justifySelf: 'center'
-                }}>
-                    {/* Placeholder for user photo */}
-                    <div style={{
-                        width: '300px',
-                        height: '350px',
-                        backgroundColor: '#2a2a2a',
-                        borderRadius: '20px',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        overflow: 'hidden'
-                    }}>
-                        <span style={{ color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>{t('about.photo_placeholder')}</span>
+        <section id="about" className="shell sec">
+            <Reveal>
+                <div className="sec-head">
+                    <div>
+                        <span className="eyebrow">{t('about.read')}</span>
+                        <h2 className="sec-title">{t('about.title')}</h2>
                     </div>
                 </div>
+            </Reveal>
+
+            <div className="about-grid">
+                <Reveal className="about-body">
+                    <p className="about-lede">{t('about.lede')}</p>
+                    <p>{t('about.p1')}</p>
+                    <p>{t('about.p2')}</p>
+                </Reveal>
+
+                <Reveal delay={120}>
+                    <div className="bezel">
+                        <div className="core">
+                            <div className="panel-head">
+                                <span className="chan">{t('hero.panel')}</span>
+                                <span className="badge">
+                                    <span className="dot dot-live" aria-hidden="true" />
+                                    {t('hero.panel.live')}
+                                </span>
+                            </div>
+
+                            {rows.map((r) => (
+                                <div key={r.k} className="about-row">
+                                    <span className="chan">{r.k}</span>
+                                    <span
+                                        className={
+                                            r.live ? 'about-row-v about-row-live' : 'about-row-v'
+                                        }
+                                    >
+                                        {r.v}
+                                    </span>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </Reveal>
             </div>
         </section>
     );
