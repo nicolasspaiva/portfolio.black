@@ -1,80 +1,76 @@
-
+import { ArrowUpRight } from '@phosphor-icons/react';
 import { useLanguage } from '../context/LanguageContext';
+import { PROJECTS } from '../constants/data';
+import { ICON } from '../constants/ui';
+import Reveal from './Reveal';
 
 const Projects = () => {
-    const { t } = useLanguage();
-    const projects = [
-        { id: 1, title: t('projects.1.title'), desc: t('projects.1.desc') },
-        { id: 2, title: t('projects.2.title'), desc: t('projects.2.desc') },
-        { id: 3, title: t('projects.3.title'), desc: t('projects.3.desc') },
-    ];
+    const { language, t } = useLanguage();
 
     return (
-        <section id="projects" style={{
-            padding: '8rem 2rem',
-            maxWidth: 'var(--container-width)',
-            margin: '0 auto',
-            marginBottom: '4rem'
-        }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'end', marginBottom: '3rem' }}>
-                <h2 style={{ fontSize: '2rem' }}>{t('projects.title')}</h2>
-                <a href="#" style={{
-                    fontFamily: 'var(--font-mono)',
-                    color: 'var(--text-muted)',
-                    fontSize: '0.9rem',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '0.5rem'
-                }}>
-                    {t('projects.view_all')} <span>→</span>
-                </a>
-            </div>
-
-            <div style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-                gap: '2rem'
-            }}>
-                {projects.map((project) => (
-                    <div key={project.id} style={{
-                        borderRadius: 'var(--radius-card)',
-                        overflow: 'hidden',
-                        backgroundColor: 'var(--bg-card)',
-                        transition: 'var(--transition-soft)',
-                    }}>
-                        <div style={{
-                            height: '200px',
-                            background: `linear-gradient(45deg, ${['#1e3a8a', '#064e3b', '#4c1d95'][project.id - 1]
-                                }, #0a0a0a)`,
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center'
-                        }}>
-                            {/* Abstract image placeholder */}
-                        </div>
-
-                        <div style={{ padding: '2rem' }}>
-                            <h3 style={{ marginBottom: '0.5rem', fontSize: '1.25rem' }}>{project.title}</h3>
-                            <p style={{
-                                color: 'var(--text-muted)',
-                                marginBottom: '1.5rem',
-                                fontSize: '0.95rem'
-                            }}>
-                                {project.desc}
-                            </p>
-
-                            <button style={{
-                                color: 'var(--text-main)',
-                                display: 'flex',
-                                alignItems: 'center',
-                                gap: '0.5rem',
-                                fontSize: '0.9rem',
-                                padding: 0
-                            }}>
-                                {t('projects.read_more')} <span>→</span>
-                            </button>
-                        </div>
+        <section id="projects" className="shell sec">
+            <Reveal>
+                <div className="sec-head">
+                    <div>
+                        <span className="eyebrow">{t('proj.eyebrow')}</span>
+                        <h2 className="sec-title">{t('proj.title')}</h2>
                     </div>
+                    <span className="sec-read">
+                        {PROJECTS.length} {t('proj.read')}
+                    </span>
+                </div>
+            </Reveal>
+
+            <div className="proj-grid">
+                {PROJECTS.map((p, i) => (
+                    <Reveal key={p.name} delay={i * 110} className="card proj-card bezel" as="article">
+                        <div className="core">
+                            <div className="proj-meta">
+                                <span>{p.kind[language]}</span>
+                                <span aria-hidden="true">·</span>
+                                <span>{p.period[language]}</span>
+                            </div>
+
+                            <h3 className="proj-name">{p.name}</h3>
+                            <p className="proj-sum">{p.summary[language]}</p>
+
+                            <ul className="tl-list">
+                                {p.bullets.map((b) => (
+                                    <li key={b.en}>{b[language]}</li>
+                                ))}
+                            </ul>
+
+                            <div className="proj-foot">
+                                <span className="badge">
+                                    {p.status === 'live' && (
+                                        <span className="dot dot-live" aria-hidden="true" />
+                                    )}
+                                    {t(`proj.status.${p.status}`)}
+                                </span>
+
+                                <div className="chip-row">
+                                    {p.tech.map((tech) => (
+                                        <span key={tech} className="chip">
+                                            {tech}
+                                        </span>
+                                    ))}
+                                </div>
+
+                                {p.href && (
+                                    <a
+                                        href={p.href}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="link-more"
+                                        style={{ marginTop: '1.35rem' }}
+                                    >
+                                        {t('proj.link')}
+                                        <ArrowUpRight size={ICON.sm} weight="light" aria-hidden="true" />
+                                    </a>
+                                )}
+                            </div>
+                        </div>
+                    </Reveal>
                 ))}
             </div>
         </section>

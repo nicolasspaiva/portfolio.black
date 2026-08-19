@@ -1,6 +1,5 @@
 import { createContext, useContext, useState, useEffect, type ReactNode } from 'react';
-
-
+import { translations, type Language } from '../constants/translations';
 
 interface LanguageContextType {
     language: Language;
@@ -8,27 +7,23 @@ interface LanguageContextType {
     t: (key: string) => string;
 }
 
-import { translations, type Language } from '../constants/translations';
-
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
 export const LanguageProvider = ({ children }: { children: ReactNode }) => {
     const [language, setLanguage] = useState<Language>(() => {
         const saved = localStorage.getItem('language');
-        return (saved === 'en' || saved === 'pt') ? saved : 'en';
+        if (saved === 'en' || saved === 'pt') return saved;
+        return navigator.language.toLowerCase().startsWith('pt') ? 'pt' : 'en';
     });
 
     useEffect(() => {
         localStorage.setItem('language', language);
+        document.documentElement.lang = language === 'pt' ? 'pt-BR' : 'en';
     }, [language]);
 
-    const toggleLanguage = () => {
-        setLanguage(prev => prev === 'en' ? 'pt' : 'en');
-    };
+    const toggleLanguage = () => setLanguage((prev) => (prev === 'en' ? 'pt' : 'en'));
 
-    const t = (key: string) => {
-        return translations[language][key] || key;
-    };
+    const t = (key: string) => translations[language][key] ?? key;
 
     return (
         <LanguageContext.Provider value={{ language, toggleLanguage, t }}>
@@ -37,6 +32,7 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
     );
 };
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useLanguage = () => {
     const context = useContext(LanguageContext);
     if (context === undefined) {

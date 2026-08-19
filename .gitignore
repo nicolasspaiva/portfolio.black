@@ -22,3 +22,12 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Ferramental local do Claude Code.
+# .agents/ guarda as skills vendorizadas (3,8 MB de dados de terceiros) e
+# .claude/skills/ são apenas symlinks para dentro dele — versionar os links
+# deixaria o repo com ponteiros quebrados para quem clonasse.
+# skills-lock.json, esse sim versionado, registra origem e hash de cada skill,
+# que é o suficiente para reinstalá-las.
+.agents/
+.claude/
