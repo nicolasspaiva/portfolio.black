@@ -31,3 +31,4 @@ dist-ssr
 # que é o suficiente para reinstalá-las.
 .agents/
 .claude/
+.vercel
